@@ -1,0 +1,8 @@
+.click{
+  cursor: pointer;
+  color: #f00;
+  padding: 40px 0px
+}
+.click .fa{
+  font-size: 25px;
+}

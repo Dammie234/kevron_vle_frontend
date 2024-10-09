@@ -1,0 +1,113 @@
+<div class="main-wrapper">
+
+  <app-header [user]="user"></app-header>
+
+
+  <app-breadcrumb [title]="'Edit Timetable'" [url]="'/account/timetables'" [sub_title]="'Timetables'"></app-breadcrumb>
+
+
+  <div class="page-content">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+          <app-sidebar [user]="user"></app-sidebar>
+        </div>
+
+
+        <div class="col-xl-9 col-lg-9">
+          <div class="settings-widget card-details">
+            <div class="settings-menu p-0">
+              <div class="profile-heading">
+                <div class="d-flex justify-content-between">
+                  <h3>Edit Timetable</h3>
+                  <a routerLink="/account/timetables" class="add-course btn-primary" style="margin-top: 0px">Go Back</a>
+                </div>
+              </div>
+              <div class="row" *ngIf="error">
+                <div class="col-lg-12">
+                  <div class="alert alert-danger"><strong>Oops!</strong> {{error}}</div>
+                </div>
+              </div>
+              <app-loader *ngIf="loading; else loadForm" [title]="loadingTitle"></app-loader>
+              <ng-template #loadForm>
+                <form class="checkout-form" (submit)="submit()">
+                  <div class="row">
+                    <div class="edit-profile-info">
+                      <h5>Timetable Details</h5>
+                      <p>Add timetable information</p>
+                    </div>
+                  </div>
+                  <div class="row justify-content-center">
+                    <div class="col-md-4">
+                      <div class="input-block">
+                        <label class="form-label">Category</label>
+                        <select class="form-control" name="category_id" [(ngModel)]="timetable.category_id" required>
+                          <option *ngFor="let category of categories" [value]="category.id">{{category.title}}</option>
+                        </select>
+
+                      </div>
+
+                    </div>
+                    <div class="col-md-8">
+                      <div class="input-block">
+                        <label class="form-label">Title</label>
+                        <input type="text" class="form-control" name="title" [(ngModel)]="timetable.title" required>
+
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="input-block">
+                        <label class="form-label">Timetable File</label>
+                        <input type="file" (change)="onFileChange($event)" accept=".xlsx" required class="form-control"
+                          name="file">
+                        <div *ngIf="file">
+                          <section class="file-info mt-2">
+                            File details:
+                            <ul>
+                              <li>Name: {{file.name}}</li>
+                              <li>Type: {{file.type}}</li>
+                              <li>Size: {{file.size}} bytes</li>
+                            </ul>
+                          </section>
+
+
+
+                          <section [ngSwitch]="status">
+                            <p *ngSwitchCase="'uploading'">⏳ Uploading...</p>
+                            <p *ngSwitchCase="'success'">✅ Done!</p>
+                            <p *ngSwitchCase="'fail'">❌ Error!</p>
+                            <p *ngSwitchDefault>😶 Waiting to upload...</p>
+                          </section>
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="col-md-12" >
+                      <button class="btn btn-primary" type="submit">Update Timetable</button>
+                    </div>
+
+
+
+                  </div>
+
+
+                </form>
+
+              </ng-template>
+
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <app-footer></app-footer>
+
+</div>

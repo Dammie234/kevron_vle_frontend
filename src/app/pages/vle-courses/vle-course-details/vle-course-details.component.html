@@ -1,0 +1,223 @@
+<div class="main-wrapper">
+  <app-frontend-header></app-frontend-header>
+
+
+  <div class="breadcrumb-bar">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 col-12">
+          <div class="breadcrumb-list">
+            <nav aria-label="breadcrumb" class="page-breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+                <li class="breadcrumb-item" aria-current="page">Courses</li>
+                <li class="breadcrumb-item" aria-current="page">All Courses</li>
+                <li class="breadcrumb-item" aria-current="page">{{data.course.title}}</li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="inner-banner">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="instructor-wrap border-bottom-0 m-0">
+            <div class="about-instructor align-items-center">
+              <div class="abt-instructor-img">
+                <a href="instructor-profile.html">
+                 <img src="assets/img/user/user-17.jpg" *ngIf="!data.instructor.profile_picture" alt="Img" class="img-fluid">
+                 <img [src]="'http://127.0.0.1:8000/' + data.instructor.profile_picture" *ngIf="data.instructor.profile_picture" alt="Img"
+                   class="img-fluid">
+                </a>
+              </div>
+              <div class="instructor-detail me-3">
+                <h5><a href="instructor-profile.html">{{data.instructor.lastname + ' ' + data.instructor.firstname}}</a></h5>
+                <p>{{data.instructor.specialization}}</p>
+              </div>
+
+            </div>
+            <span class="web-badge mb-3">{{data.course.category}}</span>
+          </div>
+          <h2>{{data.course.title}}</h2>
+
+          <div class="course-info d-flex align-items-center border-bottom-0 m-0 p-0">
+            <div class="cou-info">
+              <img src="assets/img/icon/icon-01.svg" alt="Img">
+              <p>{{data.info.modules}} Lessons</p>
+            </div>
+
+            <div class="cou-info">
+              <img src="assets/img/icon/people.svg" alt="Img">
+              <p>{{data.info.students}} students enrolled</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <section class="page-content course-sec">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8">
+
+          <div class="card overview-sec">
+            <div class="card-body">
+              <h5 class="subs-title">Overview</h5>
+              <h6>Course Description</h6>
+              <div [innerHTML]="data.course.description"></div>
+
+              <h6>What you'll learn</h6>
+              <div class="row">
+                <div class="col-md-6">
+                  <ul>
+                    <li *ngFor="let e of [].constructor(data.sections.length / 2); let i = index">
+                      {{data.sections[i].title}}
+                    </li>
+
+                  </ul>
+                </div>
+                <div class="col-md-6">
+                  <ul>
+                     <li *ngFor="let e of [].constructor(data.sections.length / 2); let i = index">
+                      {{data.sections[(data.sections.length / 2) + i].title}}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+
+          <div class="card content-sec">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-6">
+                  <h5 class="subs-title">Course Content</h5>
+                </div>
+                <div class="col-sm-6 text-sm-end">
+                  <h6>92 Lectures </h6>
+                </div>
+              </div>
+              <div class="course-card" *ngFor="let section of data.sections">
+                <h6 class="cou-title">
+                  <a class="collapsed" data-bs-toggle="collapse" [href]="'#collapse' + section.id" aria-expanded="false"
+                    (click)="getModules(section.id)">{{section.title}}</a>
+                </h6>
+                <div [id]="'collapse' + section.id" class="card-collapse collapse">
+                  <ul>
+                    <li *ngFor="let module of modules">
+                      <p><img src="assets/img/icon/play.svg" alt="Img" class="me-2">{{module.title}}</p>
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+
+          <div class="card instructor-sec">
+            <div class="card-body">
+              <h5 class="subs-title">About the instructor</h5>
+              <div class="instructor-wrap">
+                <div class="about-instructor">
+                  <div class="abt-instructor-img">
+                    <a href="instructor-profile.html">
+                      <img src="assets/img/user/user-17.jpg" *ngIf="!data.instructor.profile_picture" alt="Img"
+                        class="img-fluid">
+                      <img [src]="'http://127.0.0.1:8000/' + data.instructor.profile_picture"
+                        *ngIf="data.instructor.profile_picture" alt="Img" class="img-fluid">
+                      </a>
+                  </div>
+                  <div class="instructor-detail">
+                    <h5><a
+                        href="instructor-profile.html">{{data.instructor.lastname + ' ' + data.instructor.firstname}}</a>
+                    </h5>
+                    <p>{{data.instructor.specialization}}</p>
+                  </div>
+                </div>
+
+              </div>
+              <div class="course-info d-flex align-items-center">
+                <div class="cou-info">
+                  <img src="assets/img/icon/play.svg" alt="Img">
+                  <p>{{data.info.courses}} Courses</p>
+                </div>
+                <div class="cou-info">
+                  <img src="assets/img/icon/icon-01.svg" alt="Img">
+                  <p>{{data.info.modules}} Lesson</p>
+                </div>
+
+                <div class="cou-info">
+                  <img src="assets/img/icon/people.svg" alt="Img">
+                  <p>{{data.info.modules}} students enrolled</p>
+                </div>
+              </div>
+              <p>{{data.instructor.bio}}</p>
+
+            </div>
+          </div>
+
+
+
+
+        </div>
+        <div class="col-lg-4">
+          <div class="sidebar-sec">
+
+            <div class="video-sec vid-bg">
+              <div class="card">
+                <div class="card-body">
+
+                  <div class="video-details">
+                    <div class="course-fee">
+                     <h2 *ngIf="location.country == 'Nigeria'">&#8358;{{data.course.local_price | number}}</h2>
+                      <h2 *ngIf="location.country != 'Nigeria'">${{data.course.foreign_price | number}}</h2>
+
+                    </div>
+
+                    <button (click)="addToCart(data.course.id, location.country)"  class="btn btn-enroll w-10 mt-5">Enroll Now</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="card include-sec">
+              <div class="card-body">
+                <div class="cat-title">
+                  <h4>Includes</h4>
+                </div>
+                <ul>
+
+                  <li><img src="assets/img/icon/play.svg" class="me-2" alt="Img"> {{data.info.resources}} downloadable resources</li>
+                  <li><img src="assets/img/icon/key.svg" class="me-2" alt="Img"> Full lifetime access</li>
+
+                  <li><img src="assets/img/icon/cloud.svg" class="me-2" alt="Img"> Assessments</li>
+                  <li><img src="assets/img/icon/cloud.svg" class="me-2" alt="Img"> Quizes</li>
+
+                </ul>
+              </div>
+            </div>
+
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <app-footer></app-footer>
+</div>

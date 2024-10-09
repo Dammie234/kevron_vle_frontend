@@ -1,0 +1,78 @@
+<div class="main-wrapper">
+
+  <app-header [user]="user"></app-header>
+
+
+  <app-breadcrumb [title]="'My Courses'"></app-breadcrumb>
+
+
+  <div class="page-content">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+          <app-sidebar [user]="user"></app-sidebar>
+        </div>
+
+
+        <div class="col-xl-9 col-lg-9">
+          <div class="profile-heading">
+            <div class="d-flex justify-content-between">
+              <h3>My Courses</h3>
+
+            </div>
+          </div>
+          <div class="row mt-3" *ngIf="loading; else loadData">
+            <app-loader [title]="loadingTitle"></app-loader>
+          </div>
+          <ng-template #loadData>
+
+            <div class="row mt-3" *ngIf="courses.length != 0; else loadMessage">
+
+              <div class="col-xxl-4 col-md-6 d-flex" *ngFor="let course of courses">
+                <div class="course-box flex-fill">
+                  <div class="product">
+                    <div class="product-img">
+                      <a routerLink="/account/my-courses/{{course.slug}}">
+                        <img class="img-fluid" alt="Img" [src]="'http://127.0.0.1:8000/' + course.image">
+                      </a>
+                    </div>
+                    <div class="product-content">
+                      <h3 class="title instructor-text"><a href="javascript:void(0)">{{course.title}}</a></h3>
+
+                      <div class="course-edit-btn d-flex align-items-center justify-content-between mt-2">
+                        <a routerLink="/account/my-courses/{{course.slug}}"><i class="bx bx-info me-2"></i>Course Details</a>
+                        <a routerLink="/account/my-courses/course/{{course.key}}"><i
+                            class="bx bxs-graduation me-2"></i>@if(course.start  == 0){
+                              <span>Start</span>
+                            }@else {
+                              <span>Continue</span>
+                            }
+                          </a>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+            <ng-template #loadMessage>
+              <app-error-message [message]="'There are no courses added yet!'"></app-error-message>
+            </ng-template>
+
+          </ng-template>
+
+
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <app-footer></app-footer>
+
+</div>

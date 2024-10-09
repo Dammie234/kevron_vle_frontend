@@ -1,0 +1,63 @@
+<div class="main-wrapper">
+
+  <app-header [user]="user"></app-header>
+
+
+  <app-breadcrumb [title]="'Policies'"></app-breadcrumb>
+
+
+  <div class="page-content">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+          <app-sidebar [user]="user"></app-sidebar>
+        </div>
+
+
+        <div class="col-xl-9 col-lg-9">
+          <div class="settings-widget card-details">
+            <div class="settings-menu p-0">
+              <div class="profile-heading">
+                <div class="">
+                  <h3>Policies</h3>
+                  <p class="text-danger">You have read all policies and check that you have read before you can be able to perform any activity.</p>
+                </div>
+
+              </div>
+              <app-loader *ngIf="loading; else loadData" [title]="loadingTitle"></app-loader>
+              <ng-template #loadData>
+                <div class="p-3">
+                  <div class="faq-card" *ngFor="let policy of policies; index as i;">
+                    <h6 class="faq-title">
+                      <a class="collapsed" data-bs-toggle="collapse" [href]="'#faqone' + i"
+                        aria-expanded="false">{{policy.title}}</a>
+                    </h6>
+                    <div [id]="'faqone' + i" class="collapse">
+                      <div class="faq-detail">
+                        <div [innerHTML]="policy.content"></div>
+                        <p class="text-danger">Click the button below to agree to our {{policy.title}} </p>
+                        <button type="button" class="btn btn-primary mb-2" (click)="readPolicy(policy.policy_id)">Agree</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+              </ng-template>
+
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <app-footer></app-footer>
+
+</div>

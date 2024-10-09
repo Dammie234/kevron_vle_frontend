@@ -1,0 +1,65 @@
+<header class="header header-page">
+  <div class="header-fixed">
+    <nav class="navbar navbar-expand-lg header-nav scroll-sticky">
+      <div class="container ">
+        <div class="navbar-header">
+
+          <a routerLink="/account/dashboard" class="navbar-brand logo">
+            <img src="assets/img/kevron-group-logo.png" class="img-fluid" alt="Logo">
+          </a>
+        </div>
+        <div class="main-menu-wrapper">
+          <div class="menu-header">
+            <a routerLink="/account/dashboard" class="menu-logo">
+              <img src="assets/img/kevron-group-logo.png" class="img-fluid" alt="Logo">
+            </a>
+
+          </div>
+
+        </div>
+        <ul class="nav header-navbar-rht">
+          <li class="nav-item user-nav">
+            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
+              <span class="user-img">
+                <img *ngIf="user.profile_picture; else displayAvatar"
+                  [src]="'http://127.0.0.1:8000/' + user.profile_picture" alt="Img">
+                  <ng-template #displayAvatar>
+<img src="assets/img/user/user-17.jpg" alt="Img">
+                  </ng-template>
+
+
+                <span class="status online"></span>
+              </span>
+            </a>
+            <div class="users dropdown-menu dropdown-menu-right" data-popper-placement="bottom-end">
+              <div class="user-header">
+                <div class="avatar avatar-sm">
+
+                  <img *ngIf="user.profile_picture; else displayImage" [src]="'http://127.0.0.1:8000/' + user.profile_picture"
+                    alt="User Image" class="avatar-img rounded-circle">
+                    <ng-template #displayImage>
+                      <img src="assets/img/user/user-17.jpg" alt="User Image" class="avatar-img rounded-circle">
+                    </ng-template>
+
+
+                </div>
+                <div class="user-text">
+                  <h6>{{user.firstname + ' ' + user.lastname}}</h6>
+                  <p *ngIf="user.role == 1">Administrator</p>
+                  <p *ngIf="user.role == 2">Instructor</p>
+                  <p *ngIf="user.role == 3">Student</p>
+                </div>
+              </div>
+              <a class="dropdown-item" routerLink="/account/dashboard"><i class="feather-home me-1"></i>
+                Dashboard</a>
+              <a class="dropdown-item" href="instructor-settings.html"><i class="feather-star me-1"></i> Edit
+                Profile</a>
+
+              <a class="dropdown-item" href="/" (click)="logout()"><i class="feather-log-out me-1"></i> Logout</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</header>

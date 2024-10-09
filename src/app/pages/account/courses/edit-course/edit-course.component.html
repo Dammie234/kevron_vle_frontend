@@ -1,0 +1,128 @@
+<div class="main-wrapper">
+
+  <app-header [user]="user"></app-header>
+
+
+  <app-breadcrumb [title]="'Edit Course'" [url]="'/account/courses'" [sub_title]="'Courses'"></app-breadcrumb>
+
+
+  <div class="page-content">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+          <app-sidebar [user]="user"></app-sidebar>
+        </div>
+
+
+        <div class="col-xl-9 col-lg-9">
+
+          <div class="settings-widget card-details">
+            <app-loader *ngIf="loading1; else loadData" [title]="'Loading Data'"></app-loader>
+            <ng-template #loadData>
+              <div class="settings-menu p-0">
+                <div class="profile-heading">
+                  <div class="d-flex justify-content-between">
+                    <h3>Edit Course</h3>
+                    <a routerLink="/account/courses" class="add-course btn-primary" style="margin-top: 0px">Go Back</a>
+                  </div>
+                </div>
+                <app-loader *ngIf="loading2; else loadForm" [title]="'Updating Course'"></app-loader>
+                <ng-template #loadForm>
+                  <div class="row" *ngIf="message"><app-success-message [message]="message"></app-success-message></div>
+                  <form class="checkout-form" (submit)="submit()">
+                    <div class="row">
+                      <div class="edit-profile-info">
+                        <h5>Course Details</h5>
+                        <p>Edit course information</p>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3">
+                        <div class="input-block">
+                          <label class="form-label">Category</label>
+                          <select class="form-control" name="category" [(ngModel)]="category">
+                            <option *ngFor="let category of categories" [value]="category.id">{{category.title}}
+                            </option>
+                          </select>
+                          <span class="text-danger" *ngIf="errors.category">{{errors.category}}</span>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="input-block">
+                          <label class="form-label">Instructor</label>
+                          <select class="form-control" name="instructor" [(ngModel)]="instructor">
+                            <option *ngFor="let instructor of instructors" [value]="instructor.id">
+                              {{instructor.lastname + ' ' + instructor.firstname}}</option>
+                          </select>
+                          <span class="text-danger" *ngIf="errors.instructor">{{errors.instructor}}</span>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="input-block">
+                          <label class="form-label">Title</label>
+                          <input type="text" class="form-control" name="title" [(ngModel)]="course.title">
+                          <span class="text-danger" *ngIf="errors.title">{{errors.title}}</span>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="input-block">
+                          <label class="form-label">Local Price (Naira)</label>
+                          <input type="number" class="form-control" name="local_price" [(ngModel)]="course.local_price">
+                          <span class="text-danger" *ngIf="errors.local_price">{{errors.local_price}}</span>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="input-block">
+                          <label class="form-label">Foreign Price (USD)</label>
+                          <input type="number" class="form-control" name="foreign_price" [(ngModel)]="course.forign_price">
+                          <span class="text-danger" *ngIf="errors.foreign_price">{{errors.foreign_price}}</span>
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <img [src]="'http://127.0.0.1:8000/' + course.image" class="img-fluid">
+                      </div>
+                      <div class="col-md-5">
+                        <div class="input-block">
+                          <label class="form-label">Image</label>
+                          <input type="file" class="form-control" name="image" (change)="selectFile($event)">
+                          <span class="text-danger" *ngIf="errors.file">{{errors.image}}</span>
+                        </div>
+                      </div>
+
+                      <div class="col-md-2">
+                        <img *ngIf="url" [src]="url" class="img-fluid">
+                      </div>
+                      <div class="col-md-12 mb-2">
+                        <div class="inner-block"><label for="description" class="form-label">Description</label>
+                          <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="course.description"
+                            name="details" id="editor1"></angular-editor>
+                        </div>
+                      </div>
+
+                      <div class="col-md-12 mt-2">
+                        <button class="btn btn-primary" type="submit">Update Course</button>
+                      </div>
+
+                    </div>
+
+                  </form>
+
+                </ng-template>
+
+
+              </div>
+            </ng-template>
+
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <app-footer></app-footer>
+
+</div>

@@ -1,0 +1,84 @@
+<div class="main-wrapper">
+
+  <app-header [user]="user"></app-header>
+
+
+  <app-breadcrumb [title]="'Edit Category'" [url]="'/account/categories'" [sub_title]="'Categories'"></app-breadcrumb>
+
+
+  <div class="page-content">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+          <app-sidebar [user]="user"></app-sidebar>
+        </div>
+
+
+        <div class="col-xl-9 col-lg-9">
+
+          <div class="settings-widget card-details">
+            <div class="settings-menu p-0">
+              <div class="profile-heading">
+                <div class="d-flex justify-content-between">
+                  <h3>Edit Category</h3>
+                  <a routerLink="/account/categories" class="add-course btn-primary" style="margin-top: 0px">Go Back</a>
+                </div>
+
+              </div>
+              <app-loader *ngIf="loading; else loadForm" [title]="loadingTitle"></app-loader>
+              <ng-template #loadForm>
+                <form class="checkout-form" (submit)="submit()">
+                  <div class="row">
+                    <div class="edit-profile-info">
+                      <h5>Category Details</h5>
+                      <p>Edit category information</p>
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="success"><app-success-message [message]="success"></app-success-message></div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="input-block">
+                        <label class="form-label">Title</label>
+                        <input type="text" class="form-control" name="title" [(ngModel)]="category.title">
+                        <span class="text-danger" *ngIf="errors.title">{{errors.title}}</span>
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <img [src]="'http://127.0.0.1:8000/' + category.image" class="img-fluid">
+                    </div>
+                    <div class="col-md-8">
+                      <div class="input-block">
+                        <label class="form-label">Image</label>
+                        <input type="file" class="form-control" name="image" (change)="selectFile($event)">
+                        <span class="text-danger" *ngIf="errors.file">{{errors.image}}</span>
+                      </div>
+                    </div>
+
+                    <div class="col-md-2">
+                      <img *ngIf="url" [src]="url" class="img-fluid">
+                    </div>
+
+                    <div class="col-md-12 mt-2">
+                      <button class="btn btn-primary" type="submit">Update Category</button>
+                    </div>
+
+                  </div>
+
+                </form>
+
+              </ng-template>
+
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <app-footer></app-footer>
+
+</div>

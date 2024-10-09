@@ -1,0 +1,131 @@
+<div class="main-wrapper">
+
+  <app-header [user]="user"></app-header>
+
+
+  <app-breadcrumb [title]="'Courses Details'" [url]="'/account/my-courses'" [sub_title]="'My Courses'">
+  </app-breadcrumb>
+
+
+  <div class="page-content">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+          <app-sidebar [user]="user"></app-sidebar>
+        </div>
+
+
+        <div class="col-xl-9 col-lg-9">
+          <div class="profile-heading">
+            <div class="d-flex justify-content-between">
+              <h3>Course Details</h3>
+
+            </div>
+          </div>
+          <div class="row mt-3">
+            <app-loader *ngIf="loading; else loadData" [title]="loadingTitle"></app-loader>
+            <ng-template #loadData>
+              <div class="col-lg-12">
+                <div class="card overview-sec">
+                  <div class="card-body">
+                    <h5 class="subs-title pt-2">{{data.course.title}}</h5>
+                    <img [src]="'http://127.0.0.1:8000/' + data.course.image" class="img-fluid">
+                    <ul class="nav nav-fill nav-tabs" role="tablist">
+                      <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="fill-tab-0" data-bs-toggle="tab" href="#fill-tabpanel-0"
+                          role="tab" aria-controls="fill-tabpanel-0" aria-selected="true"> About the Course </a>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="fill-tab-1" data-bs-toggle="tab" href="#fill-tabpanel-1" role="tab"
+                          aria-controls="fill-tabpanel-1" aria-selected="false"> Instructor </a>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="fill-tab-2" data-bs-toggle="tab" href="#fill-tabpanel-2" role="tab"
+                          aria-controls="fill-tabpanel-2" aria-selected="false"> Sections &amp; Modules </a>
+                      </li>
+                    </ul>
+                    <div class="tab-content" id="tab-content">
+                      <div class="tab-pane active" id="fill-tabpanel-0" role="tabpanel" aria-labelledby="fill-tab-0">
+                        <div [innerHTML]="data.course.description"></div>
+                      </div>
+                      <div class="tab-pane" id="fill-tabpanel-1" role="tabpanel" aria-labelledby="fill-tab-1">
+                        <div class="card-body">
+                          <h5 class="subs-title">About the instructor</h5>
+                          <div class="instructor-wrap">
+                            <div class="about-instructor">
+                              <div class="abt-instructor-img">
+                                <a href="javascript:void(0)"><img
+                                    [src]="'http://127.0.0.1:8000/' + data.instructor.profile_picture" alt="img"
+                                    class="img-fluid"></a>
+                              </div>
+                              <div class="instructor-detail">
+                                <h5><a
+                                    href="instructor-profile.html">{{data.instructor.firstname + ' ' + data.instructor.lastname}}</a>
+                                </h5>
+                                <p>{{data.instructor.specialization}}</p>
+                              </div>
+                            </div>
+
+                          </div>
+                          <div class="course-info d-flex align-items-center">
+                            <div class="cou-info">
+                              <img src="assets/img/icon/play.svg" alt="Img">
+                              <p>{{data.info.courses}} Courses</p>
+                            </div>
+                            <div class="cou-info">
+                              <img src="assets/img/icon/icon-01.svg" alt="Img">
+                              <p>{{data.info.modules}} Lesson</p>
+                            </div>
+
+                            <div class="cou-info">
+                              <img src="assets/img/icon/people.svg" alt="Img">
+                              <p>{{data.info.modules}} students enrolled</p>
+                            </div>
+                          </div>
+                          <p>{{data.instructor.bio}}</p>
+
+                        </div>
+                      </div>
+                      <div class="tab-pane" id="fill-tabpanel-2" role="tabpanel" aria-labelledby="fill-tab-2">
+                        <h5 class="subs-title">Sections</h5>
+                        <div class="course-card" *ngFor="let section of data.sections">
+                          <h6 class="cou-title">
+                            <a class="collapsed" data-bs-toggle="collapse" [href]="'#collapse' + section.id"
+                              aria-expanded="false" (click)="getModules(section.id)">{{section.title}}</a>
+                          </h6>
+                          <div [id]="'collapse' + section.id" class="card-collapse collapse">
+                            <ul>
+                              <li *ngFor="let module of modules">
+                                <p><img src="assets/img/icon/play.svg" alt="Img" class="me-2">{{module.title}}</p>
+                              </li>
+                            </ul>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+
+
+                  </div>
+                </div>
+
+
+              </div>
+            </ng-template>
+
+
+          </div>
+
+
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <app-footer></app-footer>
+
+</div>

@@ -1,0 +1,9 @@
+p{color: #000;}
+
+ul{
+  margin-left: 25px;
+  margin-top: -9px;
+}
+ul li{
+  list-style-type: disc;
+}

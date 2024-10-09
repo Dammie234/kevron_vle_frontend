@@ -1,0 +1,90 @@
+<div class="main-wrapper">
+
+  <app-header [user]="user"></app-header>
+
+
+  <app-breadcrumb [title]="'Student Assessments'" [url]="'/account/instructor/courses'" [sub_title]="'Courses'"></app-breadcrumb>
+
+
+  <div class="page-content">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+          <app-sidebar [user]="user"></app-sidebar>
+        </div>
+
+
+        <div class="col-xl-9 col-lg-9">
+          <div class="settings-widget card-details">
+            <div class="settings-menu p-0">
+              <div class="profile-heading">
+                <div class="d-flex justify-content-between">
+                  <h3>Students' Assessments For {{data.course.title}}</h3>
+                </div>
+              </div>
+              <!-- modules -->
+              <div class="card overview-sec">
+                <div class="card-body">
+                  <h5 class="subs-title">Modules</h5>
+                  <app-loader *ngIf="loading; else loadData" [title]="loadingTitle"></app-loader>
+                  <ng-template #loadData>
+                    <div class="course-card" *ngFor="let module of modules">
+                      <h6 class="cou-title">
+                        <a class="collapsed" data-bs-toggle="collapse" [href]="'#collapse' + module.id"
+                          aria-expanded="false" (click)="getStudents(module.id)">{{module.title}}</a>
+                      </h6>
+                      <div [id]="'collapse' + module.id" class="card-collapse collapse">
+                        <!-- students here -->
+                        <div class="table-responsive custom-table"
+                          *ngIf="answers.length != 0; else displayMessage">
+                          <table class="table table-wrap mb-0">
+                            <thead>
+                              <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+
+                                <th>Email</th>
+
+                                <th>Assessment</th>
+                                <th>Date Submitted</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let student of answers; index as i;">
+                                <td><a href="javascript:void(0);" class="tab-title">{{i + 1}}</a></td>
+                                <td>{{student.firstname + ' ' + student.lastname}}</td>
+
+                                <td>{{student.email}}</td>
+                                <td><a [href]="'http://127.0.0.1:8000/answers/' + student.answer" download>Download Assessment</a></td>
+
+                                <td>{{student.created_at | date:'fullDate'}}</td>
+                              </tr>
+
+                            </tbody>
+                          </table>
+                        </div>
+                        <ng-template #displayMessage>
+                          <app-error-message [message]="'There are no registered students'"></app-error-message>
+                        </ng-template>
+                      </div>
+                    </div>
+                  </ng-template>
+
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <app-footer></app-footer>
+
+</div>

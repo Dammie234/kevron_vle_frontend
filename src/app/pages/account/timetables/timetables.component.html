@@ -1,0 +1,56 @@
+<div class="main-wrapper">
+
+  <app-header [user]="user"></app-header>
+
+  <app-breadcrumb [title]="'Timetables'"></app-breadcrumb>
+
+  <div class="page-content">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+          <app-sidebar [user]="user"></app-sidebar>
+        </div>
+        <div class="col-xl-9 col-lg-9">
+          <div class="profile-heading">
+            <div class="d-flex justify-content-between">
+              <h3 >Timetables</h3>
+              <div class="d-flex flex-row">
+
+
+                <a routerLink="/account/timetables/create" class="add-course btn-primary" style="margin-top: 0px">Add
+                  Timetable</a>
+              </div>
+            </div>
+          </div>
+          <app-loader *ngIf="loading; else loadData" [title]="loadingTitle"></app-loader>
+          <ng-template #loadData>
+            <div class="table-responsive custom-table">
+              <table class="table table-wrap mb-0">
+                <thead>
+                  <tr>
+
+                    <th>Title</th>
+                    <th></th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+
+                    <td>{{timetable.title}}</td>
+                    <td>{{timetable.created_at | date:'fullDate'}}</td>
+                    <td><a routerLink="/account/timetables/{{timetable.id}}/edit">Edit</a></td>
+                  </tr>
+                </tbody>
+
+              </table>
+            </div>
+
+
+          </ng-template>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

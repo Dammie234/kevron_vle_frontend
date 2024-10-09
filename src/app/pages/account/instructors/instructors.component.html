@@ -1,0 +1,81 @@
+<div class="main-wrapper">
+
+  <app-header [user]="user"></app-header>
+
+
+  <app-breadcrumb [title]="'Instructors'"></app-breadcrumb>
+
+
+  <div class="page-content">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+          <app-sidebar [user]="user"></app-sidebar>
+        </div>
+
+
+        <div class="col-xl-9 col-lg-9">
+          <div class="settings-widget card-details">
+            <div class="settings-menu p-0">
+              <div class="profile-heading">
+                <div class="d-flex justify-content-between">
+                  <h3>Instructors</h3>
+                  <a routerLink="/account/instructors/create" class="add-course btn-primary" style="margin-top: 0px">Add
+                    Instructor</a>
+                </div>
+
+              </div>
+              <app-loader *ngIf="loading; else loadData" [title]="loadingTitle"></app-loader>
+              <ng-template #loadData>
+                <div class="table-responsive custom-table" *ngIf="instructors.length != 0; else displayMessage">
+                  <table class="table table-wrap mb-0">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Gender</th>
+                        <th>Email</th>
+                        <th>Mobile Phone</th>
+                        <th>Address</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let instructor of instructors; index as i;">
+                        <td><a href="javascript:void(0);" class="tab-title">{{i + 1}}</a></td>
+                        <td>{{instructor.firstname + ' ' + instructor.lastname}}</td>
+                        <td>{{instructor.gender}}</td>
+                        <td>{{instructor.email}}</td>
+                        <td>{{instructor.mobile_phone}}</td>
+                        <td>{{instructor.address + ', ' + instructor.city }}</td>
+                        <td>
+                          <a class="d-flex flex-row" routerLink="/account/instructors/{{instructor.id}}/edit">
+                            <i class="bx bx-edit"></i> Edit
+                          </a>
+                        </td>
+                      </tr>
+
+                    </tbody>
+                  </table>
+                </div>
+                <ng-template #displayMessage>
+                  <app-error-message [message]="'There are no registered instructors'"></app-error-message>
+                </ng-template>
+
+              </ng-template>
+
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <app-footer></app-footer>
+
+</div>

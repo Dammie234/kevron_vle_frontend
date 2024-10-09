@@ -1,0 +1,115 @@
+<div class="main-wrapper">
+
+  <app-header [user]="user"></app-header>
+
+
+  <app-breadcrumb [title]="'Add Assessment Question'" [url]="'/account/assessment-questions'" [sub_title]="'Assessment Questions'"></app-breadcrumb>
+
+
+  <div class="page-content">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+          <app-sidebar [user]="user"></app-sidebar>
+        </div>
+
+
+        <div class="col-xl-9 col-lg-9">
+          <div class="profile-heading">
+            <div class="d-flex justify-content-between">
+              <h3>Courses</h3>
+              <a routerLink="/account/assessment-questions" class="add-course btn-primary"
+                style="margin-top: 0px">Go Back </a>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-lg-12">
+              <app-loader *ngIf="loading; else loadForm" [title]="loadingTitle"></app-loader>
+              <ng-template #loadForm>
+                <form class="checkout-form" (submit)="submit()">
+                  <div class="row">
+                    <div class="edit-profile-info">
+                      <h5>Course Details</h5>
+                      <p>Add course information</p>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="input-block">
+                        <label class="form-label">Course</label>
+                        <select class="form-control" name="course" [(ngModel)]="course" (change)="selectCourse($event)">
+                          <option *ngFor="let course of courses" [value]="course.id">{{course.title}}</option>
+                        </select>
+                        <span class="text-danger" *ngIf="errors.course">{{errors.course}}</span>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="input-block">
+                        <label class="form-label">Modules</label>
+                        <select class="form-control" name="module" [(ngModel)]="module">
+                          <option *ngFor="let module of modules" [value]="module.id">
+                            {{module.title }}</option>
+                        </select>
+                        <span class="text-danger" *ngIf="errors.module">{{errors.module}}</span>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 mb-2">
+                      <div class="inner-block"><label for="questions" class="form-label">Questions</label>
+                        <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="questions" name="questions"
+                          id="editor1"></angular-editor>
+                          <span class="text-danger" *ngIf="errors.questions">{{errors.questions}}</span>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="input-block">
+                        <label class="form-label">Instructions</label>
+                        <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="instructions" name="instructions"
+                          id="editor2"></angular-editor>
+                        <span class="text-danger" *ngIf="errors.instructions">{{errors.instructions}}</span>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="input-block">
+                        <label class="form-label">Deadline</label>
+                        <input type="date" [(ngModel)]="deadline" class="form-control"
+                          name="deadline">
+                        <span class="text-danger" *ngIf="errors.deadline">{{errors.deadline}}</span>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="input-block">
+                        <label class="form-label">Lock Assessment</label>
+                        <select [(ngModel)]="lock" class="form-control" name="lock">
+                          <option value="1">Yes</option>
+                          <option value="0">No</option>
+                        </select>
+                        <span class="text-danger" *ngIf="errors.lock">{{errors.lock}}</span>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <button class="btn btn-primary" type="submit">Add Assessment</button>
+                    </div>
+
+                  </div>
+
+                </form>
+              </ng-template>
+
+            </div>
+          </div>
+
+
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <app-footer></app-footer>
+
+</div>

@@ -1,0 +1,100 @@
+<div class="main-wrapper">
+
+  <app-header [user]="user"></app-header>
+
+
+  <app-breadcrumb [title]="'Assessment Questions'"></app-breadcrumb>
+
+
+  <div class="page-content">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+          <app-sidebar [user]="user"></app-sidebar>
+        </div>
+
+
+        <div class="col-xl-9 col-lg-9">
+          <div class="profile-heading">
+            <div class="d-flex justify-content-between">
+              <h3>Assessment Questions</h3>
+              <div class="d-flex flex-row">
+                <div style="margin-right: 9px">
+                  <input type="text" name="searchText" [ngModel]="searchText" (ngModelChange)="searchKey($event)"
+                    placeholder="Search course" class="form-control">
+                </div>
+               <a routerLink="/account/assessment-questions/create" class="add-course btn-primary"
+                 style="margin-top: 0px">Add Assessment </a>
+              </div>
+            </div>
+          </div>
+         <div class="row mt-3">
+          <div class="col-lg-12">
+            <app-loader *ngIf="loading; else loadData" [title]="'Loading Assessment Questions'"></app-loader>
+            <ng-template #loadData>
+              <div class="table-responsive custom-table" *ngIf="assessments.length != 0; else displayMessage">
+                <table class="table table-wrap mb-0">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Course</th>
+                      <th>Module</th>
+
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="!searchText">
+                    <tr *ngFor="let assessment of paginatedData; index as i;">
+                      <td><a href="javascript:void(0);" class="tab-title">{{i + 1}}</a></td>
+                      <td>{{assessment.course }}</td>
+                      <td>{{assessment.module}}</td>
+
+                      <td>
+                        <a class="d-flex flex-row" routerLink="/account/assessment-questions/{{assessment.id}}/edit">
+                          <i class="bx bx-edit"></i> Edit
+                        </a>
+                      </td>
+                    </tr>
+
+                  </tbody>
+                  <tbody *ngIf="searchText">
+                    <tr *ngFor="let assessment of filteredAssessments; index as i;">
+                      <td><a href="javascript:void(0);" class="tab-title">{{i + 1}}</a></td>
+                      <td>{{assessment.course }}</td>
+                      <td>{{assessment.module}}</td>
+
+                      <td>
+                        <a class="d-flex flex-row" routerLink="/account/assessment-questions/{{assessment.id}}/edit">
+                          <i class="bx bx-edit"></i> Edit
+                        </a>
+                      </td>
+                    </tr>
+
+                  </tbody>
+                </table>
+              </div>
+              <ng-template #displayMessage>
+                <app-error-message [message]="'There are no assessment questions yet'"></app-error-message>
+              </ng-template>
+
+            </ng-template>
+
+          </div>
+         </div>
+           <!-- pagination -->
+           <app-pagination [totalItems]="assessments.length" [itemsPerPage]="itemsPerPage"
+             *ngIf="assessments.length > itemsPerPage" [currentPage]="currentPage" (onClick)="changePage($event)">
+           </app-pagination>
+
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <app-footer></app-footer>
+
+</div>

@@ -1,0 +1,371 @@
+<div class="main-wrapper">
+
+  <app-header [user]="user"></app-header>
+
+
+  <app-breadcrumb [title]="'Learning Outcomes'" [url]="'/account/courses'" [sub_title]="'Courses'"></app-breadcrumb>
+
+
+  <div class="page-content">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+          <app-sidebar [user]="user"></app-sidebar>
+        </div>
+
+
+        <div class="col-xl-9 col-lg-9">
+          <div class="profile-heading">
+            <div class="d-flex justify-content-between">
+              <h3>Learning Outcomes</h3>
+              <div class="d-flex flex-row">
+                 <a href="javascript:void(0)" (click)="addSection()" class="add-course btn-primary"
+                   style="margin-top: 0px">Add Unit </a>
+                    <a href="javascript:void(0)" (click)="addModule()" class="add-course btn-primary ml-2"
+                      style="margin-top: 0px; margin-left: 20px">Add Learning Outcome </a>
+              </div>
+
+            </div>
+          </div>
+          <div class="row mt-3" *ngIf="message" >
+            <app-success-message [message]="message"></app-success-message>
+          </div>
+          <div class="row mt-3" *ngIf="add_section">
+            <app-loader *ngIf="loading1; else loadSection" [title]="'Adding Unit'"></app-loader>
+            <ng-template #loadSection>
+              <form class="checkout-form" (submit)="storeSection()">
+                <div class="row">
+                  <div class="edit-profile-info">
+                    <h5>Add Unit</h5>
+                    <p>Add unit information</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="input-block">
+                      <label class="form-label">Title</label>
+                      <input type="text" class="form-control" name="section_title" [(ngModel)]="section_title" required>
+                      <span class="text-danger" *ngIf="errors.title">{{errors.title}}</span>
+                    </div>
+                  </div>
+                  <div class="col-lg-12 d-flex flex-row">
+                    <button class="btn btn-primary me-2" type="submit">Submit</button>
+                    <button class="btn btn-secondary" type="button" (click)="closeSection()">Close</button>
+                  </div>
+                </div>
+              </form>
+            </ng-template>
+          </div>
+
+          <div class="row mt-3" *ngIf="edit_section">
+            <app-loader *ngIf="loading2; else loadSection" [title]="'Updating Unit'"></app-loader>
+            <ng-template #loadSection>
+              <form class="checkout-form" (submit)="updateSection()">
+                <div class="row">
+                  <div class="edit-profile-info">
+                    <h5>Edit Unit</h5>
+                    <p>Edit unit information</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="input-block">
+                      <label class="form-label">Title</label>
+                      <input type="text" class="form-control" name="edit_section_title" [(ngModel)]="section.title" required>
+                      <span class="text-danger" *ngIf="errors.title">{{errors.title}}</span>
+                    </div>
+                  </div>
+                  <div class="col-lg-12 d-flex flex-row">
+                    <button class="btn btn-primary me-2" type="submit">Update</button>
+                    <button class="btn btn-secondary" type="button" (click)="closeEditSection()">Close</button>
+                  </div>
+                </div>
+              </form>
+            </ng-template>
+          </div>
+
+          <div class="row mt-3" *ngIf="add_module">
+            <app-loader *ngIf="loading3; else loadSection" [title]="'Adding Module'"></app-loader>
+            <ng-template #loadSection>
+              <form class="checkout-form" (submit)="storeModule()">
+                 <div class="row">
+                   <div class="edit-profile-info">
+                     <h5>Learning Outcomes Details</h5>
+                     <p>Add learning outcome information</p>
+                   </div>
+                 </div>
+                <div class="row">
+                  <div class="col-lg-4">
+                    <div class="input-block">
+                      <label class="form-label">Unit</label>
+                      <select class="form-control" name="module_section" [(ngModel)]="module_section" required>
+                        <option *ngFor="let section of sections" value="{{section.id}}">{{section.title}}</option>
+                        </select>
+                      <span class="text-danger" *ngIf="errors.section_id">{{errors.section_id}}</span>
+                    </div>
+                  </div>
+                  <div class="col-lg-8">
+                    <div class="input-block">
+                      <label class="form-label">Title</label>
+                      <input type="text" class="form-control" name="module_title" [(ngModel)]="module_title" required>
+                      <span class="text-danger" *ngIf="errors.title">{{errors.title}}</span>
+                    </div>
+                  </div>
+                   <div class="col-md-12 mb-2">
+                     <div class="inner-block"><label for="content" class="form-label">Content</label>
+                       <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="content" name="content"
+                         id="editor1"></angular-editor>
+                         <span class="text-danger" *ngIf="errors.content">{{errors.content}}</span>
+                     </div>
+                   </div>
+                    <div class="col-lg-6 mb-2">
+                      <div class="input-block">
+                        <label class="form-label">Video URL</label>
+                        <input type="text" class="form-control" name="video" [(ngModel)]="video" required>
+                        <span class="text-danger" *ngIf="errors.video">{{errors.video}}</span>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 mb-2">
+                      <div class="input-block">
+                        <label class="form-label">Video Duration</label>
+                        <input type="text" class="form-control" name="video_duration" [(ngModel)]="video_duration" required>
+                        <span class="text-danger" *ngIf="errors.video_duration">{{errors.video_duration}}</span>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="input-block">
+                        <label class="form-label">Lock Module</label>
+                        <select [(ngModel)]="lock" class="form-control" name="lock">
+                          <option value="1">Yes</option>
+                          <option value="0">No</option>
+                        </select>
+                        <span class="text-danger" *ngIf="errors.lock">{{errors.lock}}</span>
+                      </div>
+                    </div>
+
+                  <div class="col-lg-12 d-flex flex-row">
+                    <button class="btn btn-primary me-2" type="submit">Submit</button>
+                    <button class="btn btn-secondary" type="button" (click)="closeModule()">Close</button>
+                  </div>
+                </div>
+              </form>
+            </ng-template>
+          </div>
+
+          <div class="row mt-3" *ngIf="edit_module">
+            <app-loader *ngIf="loading4; else loadSection" [title]="'Updating Module'"></app-loader>
+            <ng-template #loadSection>
+              <form class="checkout-form" (submit)="updateModule()">
+                <div class="row">
+                  <div class="edit-profile-info">
+                    <h5>Edit  {{module.title}} Module</h5>
+                    <p>Edit module information</p>
+
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="input-block">
+                      <label class="form-label">Title</label>
+                      <input type="text" class="form-control" name="title" [(ngModel)]="module.title" required>
+                      <span class="text-danger" *ngIf="errors.title">{{errors.title}}</span>
+                    </div>
+                  </div>
+                  <div class="col-md-12 mb-2">
+                    <div class="inner-block"><label for="content" class="form-label">Content</label>
+                      <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="module.content" name="content"
+                        id="editor1"></angular-editor>
+                      <span class="text-danger" *ngIf="errors.content">{{errors.content}}</span>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 mb-2">
+                    <div class="input-block">
+                      <label class="form-label">Video URL</label>
+                      <input type="text" class="form-control" name="video" [(ngModel)]="module.video" required>
+                      <span class="text-danger" *ngIf="errors.video">{{errors.video}}</span>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 mb-2">
+                    <div class="input-block">
+                      <label class="form-label">Video Duration</label>
+                      <input type="text" class="form-control" name="video_duration" [(ngModel)]="module.video_duration"
+                        required>
+                      <span class="text-danger" *ngIf="errors.video_duration">{{errors.video_duration}}</span>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="input-block">
+                      <label class="form-label">Lock Module</label>
+                      <select [(ngModel)]="module.lock" class="form-control" name="lock">
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                      </select>
+                      <span class="text-danger" *ngIf="errors.lock">{{errors.lock}}</span>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-12 d-flex flex-row">
+                    <button class="btn btn-primary me-2" type="submit">Update</button>
+                    <button class="btn btn-secondary" type="button" (click)="closeEditModule()">Close</button>
+                  </div>
+                </div>
+              </form>
+            </ng-template>
+          </div>
+
+          <div class="row mt-3" *ngIf="add_resource">
+            <form class="checkout-form" (ngSubmit)="submitResources(module.id)">
+              <div class="row">
+                <div class="edit-profile-info">
+                  <h5>Add {{module.title}} Resources</h5>
+                  <p> Resource information</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-3">
+                  <div class="input-block">
+                    <label for="" class="form-label">Number of Resources</label>
+                    <input type="number" name="counts" [(ngModel)]="counts" id="" class="form-control">
+                  </div>
+                </div>
+              </div>
+              <div class="row" *ngIf="counts != 0">
+                <div class="col-lg-6" *ngFor="let n of [].constructor(counts); let i = index">
+                  <div class="input-block mb-2">
+                    <label for="" class="form-label">Title of Resource  {{i + 1}}</label>
+                    <input type="text" class="form-control" [(ngModel)]="titles[i]" name="titles" placeholder="Title">
+                  </div>
+                  <div class="input-block mb-2">
+                    <label for="" class="form-label">URL of Resource s {{i + 1}}</label>
+                    <input type="text" class="form-control" [(ngModel)]="urls[i]" name="urls" placeholder="URL">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-12 d-flex flex-row">
+                  <button class="btn btn-primary me-2" type="submit">Submit</button>
+                  <button class="btn btn-secondary" type="button" (click)="closeAddResource()">Close</button>
+                </div>
+              </div>
+
+
+            </form>
+          </div>
+          <div class="row mt-3" *ngIf="edit_resource">
+            <div class="checkout-form">
+              <div class="row">
+                <div class="edit-profile-info">
+                  <h5>Edit {{module.title}} Resources</h5>
+                  <p>Edit resource information</p>
+                </div>
+              </div>
+              <div class="row">
+
+                <div class="col-lg-12 mb-2">
+                  <div class="row" *ngFor="let resource of module_resources">
+                    <div class="col-lg-4">
+                      <div class="input-block">
+                        <label class="form-label">Title of Resource </label>
+                        <input type="text" class="form-control" name="resource_title" [(ngModel)]="resource.title">
+                      </div>
+                    </div>
+                    <div class="col-lg-5">
+                      <div class="input-block">
+                        <label class="form-label">Resource URL (Google Drive Share Link)</label>
+                        <input type="text" class="form-control" name="resource_url" [(ngModel)]="resource.url">
+                      </div>
+                    </div>
+                    <div class="col-lg-3 pt-4">
+                      <div class="d-flex flex-row justify-content-between">
+                         <button class="btn btn-secondary btn-sm" *ngIf="resource.lock == 0" (click)="lockResource(resource.id)">Lock</button>
+                         <button class="btn btn-secondary btn-sm" *ngIf="resource.lock == 1" (click)="unlockResource(resource.id)">Unlock</button>
+                         <button class="btn btn-primary btn-sm"
+                           (click)="updateResource(resource, resource.id)">Update</button>
+                         <button class="btn btn-danger btn-sm" (click)="deleteResource(resource.id)">Delete</button>
+                      </div>
+
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-lg-12 d-flex flex-row">
+                  <button class="btn btn-secondary" type="button" (click)="closeEditResources()">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-3" *ngIf="sections.length != 0">
+            <div class="col-lg-12">
+              <div class="card content-sec">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <h5 class="subs-title">Course Content</h5>
+                    </div>
+                    <div class="col-sm-6 text-sm-end">
+                      <h6></h6>
+                    </div>
+                  </div>
+                  <div class="course-card" *ngFor="let section of sections">
+                    <div *ngIf="section.counts > 0; else displaySection">
+                      <h6 class="cou-title">
+                        <a class="collapsed" data-bs-toggle="collapse" [href]="'#collapse' + section.id"
+                          aria-expanded="false" (click)="getModules(section.id)">{{section.title}}</a>
+                      </h6>
+                      <div [id]="'collapse' + section.id" class="card-collapse collapse">
+                        <ul>
+                          <li *ngFor="let module of modules">
+                            <p><img src="assets/img/icon/play.svg" alt="Img" class="me-2">{{module.title}}</p>
+                            <div>
+                              <a href="javascript:void(0)" (click)="editModule(module.id)" class="pr-2">Edit Module</a>
+                              <a href="javascript:void(0)" (click)="addResource(module.id)" class="pr-2">Add
+                                Resource</a>
+                              <a href="javascript:void(0)" (click)="editResources(module.id)">Edit Resources</a>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="course-edit-btn d-flex align-items-center justify-content-between mt-2">
+                        <a href="javascript:void(0)" (click)="editSection(section.id)"><i
+                            class="bx bx-edit me-1"></i>Edit</a>
+
+                      </div>
+                    </div>
+                    <ng-template #displaySection>
+                     <h6 class="cou-title">
+                       <a class="collapsed" data-bs-toggle="collapse" [href]="'#collapse' + section.id"
+                         aria-expanded="false" (click)="getModules(section.id)">{{section.title}}</a>
+                     </h6>
+                     <div [id]="'collapse' + section.id" class="card-collapse collapse">
+                       <app-error-message [message]="'Learning outcomes for this unit has not been added.'">
+                       </app-error-message>
+                     </div>
+                     <div class="course-edit-btn d-flex align-items-center justify-content-between mt-2">
+                       <a href="javascript:void(0)" (click)="editSection(section.id)"><i
+                           class="bx bx-edit me-1"></i>Edit</a>
+
+                     </div>
+                    </ng-template>
+
+
+
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <app-footer></app-footer>
+
+</div>

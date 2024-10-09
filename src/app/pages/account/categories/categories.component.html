@@ -1,0 +1,76 @@
+<div class="main-wrapper">
+
+  <app-header [user]="user"></app-header>
+
+
+  <app-breadcrumb [title]="'Dashboard'"></app-breadcrumb>
+
+
+  <div class="page-content">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+          <app-sidebar [user]="user"></app-sidebar>
+        </div>
+
+
+        <div class="col-xl-9 col-lg-9">
+          <div class="profile-heading">
+            <div class="d-flex justify-content-between">
+              <h3>Categories</h3>
+              <a routerLink="/account/categories/create" class="add-course btn-primary" style="margin-top: 0px">Add
+                Category </a>
+            </div>
+
+          </div>
+
+          <div class="instructor-course-table">
+           <app-loader *ngIf="loading; else loadData" [title]="loadingTitle"></app-loader>
+           <ng-template #loadData>
+            <div class="table-responsive custom-table" *ngIf="categories.length != 0; else displayMessage">
+
+              <table class="table table-nowrap mb-0">
+                <thead>
+                  <tr>
+                    <th>Category</th>
+                    <th>Enrolled</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let category of categories">
+                    <td>
+                      <div class="table-course-detail">
+                        <a href="javascript:void(0)" class="course-table-img">
+                          <span><img [src]="'http://127.0.0.1:8000/' + category.image" alt="Img"></span>
+                          {{category.title}}
+                        </a>
+                      </div>
+                    </td>
+                    <td>{{category.counts}}</td>
+                    <td><a class="d-flex flex-row" routerLink="/account/categories/{{category.id}}/edit"> <i
+                          class="bx bx-edit"></i> Edit</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <ng-template #displayMessage>
+              <app-error-message [message]="'There are no categories added yet!'"></app-error-message>
+            </ng-template>
+
+           </ng-template>
+
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <app-footer></app-footer>
+
+</div>

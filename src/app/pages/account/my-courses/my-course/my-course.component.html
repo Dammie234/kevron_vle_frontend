@@ -1,0 +1,239 @@
+<div class="main-wrapper">
+
+  <app-header [user]="user"></app-header>
+
+
+  <app-breadcrumb [title]="'Course'" [url]="'/account/my-courses'" [sub_title]="'My Courses'">
+  </app-breadcrumb>
+
+
+  <div class="page-content">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+          <app-sidebar [user]="user"></app-sidebar>
+        </div>
+
+
+        <div class="col-xl-9 col-lg-9">
+          <div class="profile-heading">
+            <div class="d-flex justify-content-between">
+              <h3 *ngIf="!loading">{{data.course.title}}</h3>
+
+            </div>
+          </div>
+          <div class="row mt-3">
+            <app-loader *ngIf="loading; else loadData" [title]="loadingTitle"></app-loader>
+            <ng-template #loadData>
+              <div class="col-lg-12">
+                <div class="card overview-sec" *ngIf="attendModule">
+                  <div class="card-body">
+                    <h3 class="subs-title pt-2">{{section.title}}</h3>
+                    <h5 class="subs-title pt-2">{{module.title}}</h5>
+                    <div class="mt-2" *ngIf="module.content" [innerHTML]="module.content"></div>
+                      <div class="mt-2" *ngIf="module.video" style="padding:56.25% 0 0 0;position:relative;">
+
+                        <iframe
+                          [src]="getVimeoUrl(module.video)"
+                          frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write"
+                          style="position:absolute;top:0;left:0;width:100%;height:100%;"
+                          [title]="module.title"></iframe>
+                      </div>
+                    <div class="d-flex mt-5 flex-row justify-content-between">
+                      <div>
+                        <a href="javascript:void(0)" (click)="getResources(module.id)" *ngIf="module.resources">Download Resource</a>
+                        <span *ngIf="module.resources"> | </span>
+                        <a href="javascript:void(0)" (click)="getAssessment(module.id)" *ngIf="module.assessment">Assessment</a>
+                        <span *ngIf="module.assessment"> | </span>
+                        <a href="javascript:void(0)" (click)="openQuestion()"> Ask Question</a>
+                      </div>
+                      <div></div>
+                    </div>
+                    <app-success-message *ngIf="success" [message]="success" class="mt-2"></app-success-message>
+                    <app-error-message *ngIf="error" [message]="error" class="mt-2"></app-error-message>
+                  </div>
+                </div>
+
+                <div class="card overview-sec" *ngIf="openAssessment">
+                  <div class="card-body" *ngIf="assessment.lock == 0; else displayMessage">
+                     <h5 class="subs-title pt-2">{{module.title}} Assessment</h5>
+                     <div class="mt-2" [innerHTML]="assessment.questions"></div>
+
+                     <h5 class="subs-title pt-2 mt-2">Assessment Instructions</h5>
+                     <div class="text-danger mt-2" [innerHTML]="assessment.instructions"></div>
+
+                     <h5 class="subs-title pt-2 mt-2 text-danger">Deadline: {{assessment.deadline | date:'fullDate'}}</h5>
+
+                     <h5 class="subs-title pt-2 mt-5">Submit Assessment</h5>
+                     <app-loader *ngIf="loading2; else loadForm" [title]="'Uploading Assessment'"></app-loader>
+                     <ng-template #loadForm>
+                      <div class="mt-2">
+                        <label for="formFile" class="form-label">Upload assessment <span class="text-danger">(Only MS
+                            Word file allowed and you can only submit once)</span> </label>
+                        <input (change)="onFilechange($event)" class="form-control" type="file" id="formFile"
+                          accept=".doc,.docx">
+
+
+                        <div *ngIf="file">
+                          <section class="file-info mt-2">
+                            File details:
+                            <ul>
+                              <li>Name: {{file.name}}</li>
+                              <li>Type: {{file.type}}</li>
+                              <li>Size: {{file.size}} bytes</li>
+                            </ul>
+                          </section>
+
+                          <button (click)="upload()" type="button" class="btn btn-primary mt-2">Upload</button>
+
+                          <section [ngSwitch]="status">
+                            <p *ngSwitchCase="'uploading'">⏳ Uploading...</p>
+                            <p *ngSwitchCase="'success'">✅ Done!</p>
+                            <p *ngSwitchCase="'fail'">❌ Error!</p>
+                            <p *ngSwitchDefault>😶 Waiting to upload...</p>
+                          </section>
+                        </div>
+
+                      </div>
+                     </ng-template>
+<a href="javascript:void()" (click)="closeAssessment()"><i class="fa fa-close"></i> Close</a>
+
+                  </div>
+                  <ng-template #displayMessage>
+                    <app-error-message [message]="'This assessment has been locked. You will be notified when it is open'"></app-error-message>
+                  </ng-template>
+
+
+                </div>
+
+
+                <div class="card overview-sec" *ngIf="openResources">
+                  <div class="card-body">
+                    <h5 class="subs-title pt-2">{{module.title}} Resources</h5>
+                    <ul>
+                      <li *ngFor="let resource of resources">
+                        <a *ngIf="resource.lock == 0; else displayMessage" [href]="resource.url">Download Resource ({{resource.title}})</a>
+                        <ng-template #displayMessage> <app-error-message [message]="'This resource has been locked by the Admin. It will be opened when the time is due.'"></app-error-message> </ng-template>
+
+                      </li>
+                    </ul>
+
+                    <a href="javascript:void()" (click)="closeResources()"><i class="fa fa-close"></i> Close</a>
+                  </div>
+                </div>
+
+                <div class="card overview-sec" *ngIf="askQuestion">
+                  <div class="card-body">
+                    <h5 class="subs-title pt-2"> </h5>
+                    <app-loader *ngIf="loading3; else loadForm" [title]="'Asking Question'"></app-loader>
+                    <ng-template #loadForm>
+                      <form class="checkout-form" (submit)="submit()">
+                        <div class="row">
+                          <div class="edit-profile-info">
+                            <h5>Ask Question on {{module.title}}</h5>
+                            <p class="text-danger">Please ensure your question is based on {{module.title}}</p>
+                          </div>
+                        </div>
+                        <div class="row">
+
+                          <div class="col-md-12">
+                            <div class="input-block">
+                              <label class="form-label">Question</label>
+                              <input type="text" class="form-control" name="question" [(ngModel)]="question">
+                              <span class="text-danger" *ngIf="errors.question">{{errors.question}}</span>
+                            </div>
+                          </div>
+
+
+                          <div class="col-md-12">
+                            <button class="btn btn-primary" type="submit">Submit</button>
+                          </div>
+
+                        </div>
+
+                      </form>
+
+                    </ng-template>
+                  </div>
+                </div>
+
+
+
+                <div class="card overview-sec">
+                  <div class="card-body">
+                    <h5 class="subs-title">Units</h5>
+                    <div class="course-card" *ngFor="let section of data.sections">
+                      <div *ngIf="section.counts > 0; else displaySection">
+                        <h6 class="cou-title">
+                          <a class="collapsed" data-bs-toggle="collapse" [href]="'#collapse' + section.id"
+                            aria-expanded="false" (click)="getModules(section.id)">{{section.title}}</a>
+                        </h6>
+                        <div [id]="'collapse' + section.id" class="card-collapse collapse" *ngIf="modules.length != 0">
+                          <ul>
+                            <li *ngFor="let module of modules" class="d-flex">
+                              <p><img src="assets/img/icon/play.svg" alt="Img" class="me-2">{{module.title}}</p>
+                              <a href="javascript:void(0)" (click)="getModule(module.id)">Attend</a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <ng-template #displaySection>
+                        <h6 class="cou-title">
+                          <a class="collapsed" data-bs-toggle="collapse" [href]="'#collapse' + section.id"
+
+                            aria-expanded="false" >{{section.title}}</a>
+                        </h6>
+                        <div [id]="'collapse' + section.id" class="card-collapse collapse" *ngIf="modules.length != 0">
+                          <app-error-message [message]="'Learning outcomes for this unit has not been added.'"></app-error-message>
+                        </div>
+                      </ng-template>
+
+
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="card overview-sec mt-5" *ngIf="questions.length != 0">
+                  <div class="card-body">
+                    <h5 class="subs-title">Questions For {{data.course.title}}</h5>
+                  <div class="course-card" *ngFor="let question of questions">
+                      <h6 class="cou-title">
+                        <a class="collapsed" data-bs-toggle="collapse" [href]="'#collapseq' + question.id"
+                          aria-expanded="false" >{{question.question}}</a>
+                      </h6>
+                      <div [id]="'collapseq' + question.id" class="card-collapse collapse">
+                        <ul>
+                          <li  class="d-flex flex-column">
+                            <p>{{question.answer}}</p>
+                            <div class="d-flex flex-row mt-3 justify-content-between">
+                              <p>Asked by {{question.firstname + ' ' +  question.lastname}}</p>
+                              <p>{{question.created_at | date}}</p>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+            </ng-template>
+
+
+          </div>
+
+
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <app-footer></app-footer>
+
+</div>

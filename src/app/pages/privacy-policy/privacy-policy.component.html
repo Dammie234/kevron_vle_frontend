@@ -1,0 +1,57 @@
+<div class="main-wrapper">
+
+  <app-header [user]="user"></app-header>
+
+  <app-breadcrumb [title]="'Policies'"></app-breadcrumb>
+
+  <div class="page-content">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+          <app-sidebar [user]="user"></app-sidebar>
+        </div>
+        <div class="col-xl-9 col-lg-9">
+           <div class="settings-widget card-details">
+             <div class="settings-menu p-0">
+               <div class="profile-heading">
+                 <div class="d-flex justify-content-between">
+                   <h3>Policies</h3>
+                 </div>
+               </div>
+              <div class="checkout-form personal-address">
+                <div class="row">
+                  <div class="col-sm-12">
+
+<app-loader *ngIf="loading; else loadData" [title]="loadingTitle"></app-loader>
+<ng-template #loadData>
+  <div class="p-3">
+    <div class="faq-card" *ngFor="let policy of policies; index as i;">
+      <h6 class="faq-title">
+        <a class="collapsed" data-bs-toggle="collapse" [href]="'#faqone' + i" aria-expanded="false">{{policy.title}}</a>
+      </h6>
+      <div [id]="'faqone' + i" class="collapse">
+        <div class="faq-detail">
+          <div [innerHTML]="policy.content"></div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+</ng-template>
+
+
+
+
+
+                  </div>
+                </div>
+              </div>
+             </div>
+           </div>
+      </div>
+    </div>
+  </div>
+</div>

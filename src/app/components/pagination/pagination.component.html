@@ -1,0 +1,20 @@
+<div class="dash-pagination">
+  <div class="row align-items-center">
+    <div class="col-6">
+      <p>Page {{currentPage}} of {{totalItems}}</p>
+    </div>
+    <div class="col-6">
+      <ul class="pagination">
+        <li *ngIf="currentPage != 1" (click)="pageClicked(currentPage - 1)">
+          <a href="javascript:void(0)"><i class="bx bx-chevron-left"></i></a>
+        </li>
+        <li *ngFor="let page of pages" (click)="pageClicked(page)" [ngClass]="page == currentPage ? 'active' : ''">
+          <a href="javascript:void(0)">{{page}}</a>
+        </li>
+        <li (click)="pageClicked(currentPage + 1)" *ngIf="currentPage < totalPages">
+          <a href="javascript:void(0)"><i class="bx bx-chevron-right"></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

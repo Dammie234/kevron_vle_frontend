@@ -1,0 +1,94 @@
+<div class="main-wrapper">
+
+  <app-header [user]="user"></app-header>
+
+
+  <app-breadcrumb [title]="'Students'" [url]="'/account/instructor/courses'" [sub_title]="'Courses'"></app-breadcrumb>
+
+
+  <div class="page-content">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+          <app-sidebar [user]="user"></app-sidebar>
+        </div>
+
+
+        <div class="col-xl-9 col-lg-9">
+          <div class="settings-widget card-details">
+            <div class="settings-menu p-0">
+              <div class="profile-heading">
+                <div class="d-flex justify-content-between">
+                  <h3>Students For {{data.course.title}}</h3>
+                  <div><input type="text" name="searchText" [ngModel]="searchText" (ngModelChange)="searchKey($event)"
+                      placeholder="Search student firstname" class="form-control"></div>
+                </div>
+
+              </div>
+              <app-loader *ngIf="loading; else loadData" [title]="'Loading Students Data'"></app-loader>
+              <ng-template #loadData>
+                <div class="table-responsive custom-table" *ngIf="data.students.length != 0; else displayMessage">
+                  <table class="table table-wrap mb-0">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Gender</th>
+                        <th>Email</th>
+                        <th>Mobile Phone</th>
+                        <th>Address</th>
+                        <th>Registered Date</th>
+                      </tr>
+                    </thead>
+                    <tbody *ngIf="!searchText">
+                      <tr *ngFor="let student of paginatedData; index as i;">
+                        <td><a href="javascript:void(0);" class="tab-title">{{i + 1}}</a></td>
+                        <td>{{student.firstname + ' ' + student.lastname}}</td>
+                        <td>{{student.gender}}</td>
+                        <td>{{student.email}}</td>
+                        <td>{{student.mobile_phone}}</td>
+                        <td>{{student.address + ', ' + student.city }}</td>
+                        <td>{{student.registered_date | date:'fullDate'}}</td>
+                      </tr>
+
+                    </tbody>
+                    <tbody *ngIf="searchText">
+                      <tr *ngFor="let student of filteredStudents; index as i;">
+                        <td><a href="javascript:void(0);" class="tab-title">{{i + 1}}</a></td>
+                        <td>{{student.firstname + ' ' + student.lastname}}</td>
+                        <td>{{student.gender}}</td>
+                        <td>{{student.email}}</td>
+                        <td>{{student.mobile_phone}}</td>
+                        <td>{{student.address + ', ' + student.city }}</td>
+                        <td>{{student.registered_date | date:'fullDate'}}</td>
+                      </tr>
+
+                    </tbody>
+                  </table>
+                </div>
+                <ng-template #displayMessage>
+                  <app-error-message [message]="'There are no registered students'"></app-error-message>
+                </ng-template>
+
+              </ng-template>
+
+
+            </div>
+          </div>
+
+           <!-- pagination -->
+           <app-pagination [totalItems]="data.students.length" [itemsPerPage]="itemsPerPage"
+             *ngIf="data.students.length > itemsPerPage" [currentPage]="currentPage" (onClick)="changePage($event)">
+           </app-pagination>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <app-footer></app-footer>
+
+</div>

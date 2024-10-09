@@ -1,0 +1,100 @@
+<div class="main-wrapper">
+
+  <app-header [user]="user"></app-header>
+
+
+  <app-breadcrumb [title]="'Agreed Policies'"></app-breadcrumb>
+
+
+  <div class="page-content">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+          <app-sidebar [user]="user"></app-sidebar>
+        </div>
+
+
+        <div class="col-xl-9 col-lg-9">
+          <div class="settings-widget card-details">
+            <div class="settings-menu p-0">
+              <div class="profile-heading">
+                <div class="d-flex justify-content-between">
+                  <h3>Agreed Policies</h3>
+                  <div class="d-flex flex-row">
+                    <div style="margin-right: 9px">
+                      <input type="text" name="searchText" [ngModel]="searchText" (ngModelChange)="searchKey($event)"
+                        placeholder="Search lastname" class="form-control">
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+              <app-loader *ngIf="loading; else loadData" [title]="loadingTitle"></app-loader>
+              <ng-template #loadData>
+                <div class="table-responsive custom-table" *ngIf="policies.length != 0; else displayMessage">
+                  <table class="table table-wrap mb-0">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Lastname</th>
+                        <th>Firstname</th>
+                        <th>Role</th>
+                        <th>Policy</th>
+                        <th>Agreed</th>
+
+                      </tr>
+                    </thead>
+                    <tbody *ngIf="!searchText">
+                      <tr *ngFor="let policy of paginatedData; index as i;">
+                        <td><a href="javascript:void(0);" class="tab-title">{{i + 1}}</a></td>
+                        <td>{{policy.lastname}}</td>
+                        <td>{{policy.firstname}}</td>
+                        <td><span *ngIf="policy.role == 2">Instructor</span><span *ngIf="policy.role == 3">Student</span></td>
+                        <td>{{policy.title}}</td>
+                        <td><span *ngIf="policy.read == 1">Yes</span><span *ngIf="policy.read == 0">No</span></td>
+
+                      </tr>
+
+                    </tbody>
+                    <tbody *ngIf="searchText">
+                      <tr *ngFor="let policy of filteredPolicies; index as i;">
+                        <td><a href="javascript:void(0);" class="tab-title">{{i + 1}}</a></td>
+                         <td>{{policy.lastname}}</td>
+                         <td>{{policy.firstname}}</td>
+                         <td><span *ngIf="policy.role == 2">Instructor</span><span
+                             *ngIf="policy.role == 3">Student</span></td>
+                         <td>{{policy.title}}</td>
+                         <td><span *ngIf="policy.read == 1">Yes</span><span *ngIf="policy.read == 0">No</span></td>
+                      </tr>
+
+                    </tbody>
+                  </table>
+                </div>
+                <ng-template #displayMessage>
+                  <app-error-message [message]="'There are no agreed policies'"></app-error-message>
+                </ng-template>
+
+              </ng-template>
+
+
+            </div>
+          </div>
+
+
+          <!-- pagination -->
+          <app-pagination [totalItems]="policies.length" [itemsPerPage]="itemsPerPage"
+            *ngIf="policies.length > itemsPerPage" [currentPage]="currentPage" (onClick)="changePage($event)">
+          </app-pagination>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <app-footer></app-footer>
+
+</div>

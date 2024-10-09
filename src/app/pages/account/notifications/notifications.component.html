@@ -1,0 +1,76 @@
+<div class="main-wrapper">
+
+  <app-header [user]="user"></app-header>
+
+
+  <app-breadcrumb [title]="'Notifications'"></app-breadcrumb>
+
+
+  <div class="page-content">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+          <app-sidebar [user]="user"></app-sidebar>
+        </div>
+
+
+        <div class="col-xl-9 col-lg-9">
+          <div class="settings-widget card-details">
+            <div class="settings-menu p-0">
+              <div class="profile-heading">
+                <div class="d-flex justify-content-between">
+                  <h3>Notifications</h3>
+
+
+                </div>
+
+              </div>
+              <app-loader *ngIf="loading; else loadData" [title]="loadingTitle"></app-loader>
+              <ng-template #loadData>
+                <div class="checkout-form personal-address" *ngIf="notifications.length != 0; else displayMessage">
+                  <div class="row">
+                    <div class="col-sm-12">
+
+                      <div class="notication-list">
+                        <div class="notication-item" *ngFor="let notification of notifications">
+                          <div class="row">
+                            <div class="col-md-9">
+                              <div class="notication-content">
+
+                                <div class="notication-info">
+                                  <p>{{notification.message}}</p>
+                                  <p class="notify-time">{{ duration(notification.created_at) }}</p>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                              <div class="notification-btn text-end">
+                                <a href="javascript:void(0);" class="btn btn-danger" (click)="delete(notification.id)">Delete</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <ng-template #displayMessage>
+                  <app-error-message [message]="'There are no notifications'"></app-error-message>
+                </ng-template>
+
+              </ng-template>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <app-footer></app-footer>
+
+</div>

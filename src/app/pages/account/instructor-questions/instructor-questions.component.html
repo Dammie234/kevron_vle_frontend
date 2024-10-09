@@ -1,0 +1,138 @@
+<div class="main-wrapper">
+
+  <app-header [user]="user"></app-header>
+
+
+  <app-breadcrumb [title]="'Module Questions'"></app-breadcrumb>
+
+
+  <div class="page-content">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+          <app-sidebar [user]="user"></app-sidebar>
+        </div>
+
+
+        <div class="col-xl-9 col-lg-9">
+          <div class="settings-widget card-details">
+            <div class="settings-menu p-0">
+              <div class="profile-heading">
+                <div class="d-flex justify-content-between">
+                  <h3>Module Questions</h3>
+                  <div><input type="text" name="searchText" [ngModel]="searchText" (ngModelChange)="searchKey($event)"
+                      placeholder="Search student firstname" class="form-control"></div>
+                </div>
+              </div>
+
+               <div class="card overview-sec" *ngIf="openQuestion">
+                 <div class="card-body">
+                   <app-success-message *ngIf="message" [message]="message" ></app-success-message>
+                   <app-loader *ngIf="loading2; else loadForm" [title]="'Providing Answer to Question'"></app-loader>
+                   <ng-template #loadForm>
+                     <form class="checkout-form" (submit)="submit()">
+                       <div class="row">
+                         <div class="edit-profile-info">
+                           <h5>Provide answer for {{question.question}}</h5>
+                           <p class="text-danger">Please ensure you provide the right answer because this can't be edited. </p>
+                         </div>
+                       </div>
+                       <div class="row">
+
+                         <div class="col-md-12">
+                           <div class="input-block">
+                             <label class="form-label">Answer</label>
+                             <textarea rows="3" class="form-control" name="answer" [(ngModel)]="answer"></textarea>
+                             <span class="text-danger" *ngIf="errors.answer">{{errors.answer}}</span>
+                           </div>
+                         </div>
+
+
+                         <div class="col-md-12">
+                           <button class="btn btn-primary" type="submit">Submit</button><button class="btn btn-secondary" type="button" (click)="closeAnswer">Close</button>
+                         </div>
+
+                       </div>
+
+                     </form>
+
+                   </ng-template>
+                 </div>
+               </div>
+
+              <app-loader *ngIf="loading1; else loadData" [title]="'Loading Module Questions'"></app-loader>
+              <ng-template #loadData>
+                <div class="table-responsive custom-table" *ngIf="questions.length != 0; else displayMessage">
+                  <table class="table table-wrap mb-0">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Module</th>
+                        <th>Question</th>
+                        <th>Answer</th>
+
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody *ngIf="!searchText">
+                      <tr *ngFor="let question of paginatedData; index as i;">
+                        <td><a href="javascript:void(0);" class="tab-title">{{i + 1}}</a></td>
+                        <td>{{question.firstname + ' ' + question.lastname}}</td>
+                        <td>{{question.title}}</td>
+                        <td>{{question.question}}</td>
+                        <td>{{question.answer}}</td>
+
+                        <td>
+                          <a class="d-flex flex-row" href="javascript:void(0)" (click)="provideAnswer(question.id)" *ngIf="!question.answer">
+                            Provide Answer
+                          </a>
+                        </td>
+                      </tr>
+
+                    </tbody>
+                    <tbody *ngIf="searchText">
+                      <tr *ngFor="let question of filteredQuestions; index as i;">
+                        <td><a href="javascript:void(0);" class="tab-title">{{i + 1}}</a></td>
+                        <td>{{question.firstname + ' ' + question.lastname}}</td>
+                        <td>{{question.title}}</td>
+                        <td>{{question.question}}</td>
+                        <td>{{question.answer}}</td>
+
+                        <td>
+                          <a class="d-flex flex-row" href="javascript:void(0)" (click)="provideAnswer(question.id)"
+                            *ngIf="!question.answer">
+                            Provide Answer
+                          </a>
+                        </td>
+                      </tr>
+
+                    </tbody>
+                  </table>
+                </div>
+                <ng-template #displayMessage>
+                  <app-error-message [message]="'There are no questions yet'"></app-error-message>
+                </ng-template>
+
+              </ng-template>
+
+
+            </div>
+          </div>
+
+           <!-- pagination -->
+           <app-pagination [totalItems]="questions.length" [itemsPerPage]="itemsPerPage"
+             *ngIf="questions.length > itemsPerPage" [currentPage]="currentPage" (onClick)="changePage($event)">
+           </app-pagination>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <app-footer></app-footer>
+
+</div>

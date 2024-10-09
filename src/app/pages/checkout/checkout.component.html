@@ -1,0 +1,222 @@
+<div class="main-wrapper">
+  <app-frontend-header></app-frontend-header>
+
+
+  <div class="breadcrumb-bar">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 col-12">
+          <div class="breadcrumb-list">
+            <nav aria-label="breadcrumb" class="page-breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+
+                <li class="breadcrumb-item" aria-current="page">Checkout</li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <section class="course-content checkout-widget">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8" >
+          <div class="mb-2" *ngIf="carts.length != 0">
+            <div class="student-widget">
+              <div class="student-widget-group add-course-info">
+                <div class="cart-head">
+                  <h4>Billing Address</h4>
+                </div>
+                <div class="checkout-form">
+                  <form action="#">
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <div class="input-block">
+                          <label class="form-control-label">First Name</label>
+                          <input type="text" class="form-control" placeholder="Enter your first Name">
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="input-block">
+                          <label class="form-control-label">Last Name</label>
+                          <input type="text" class="form-control" placeholder="Enter your last Name">
+                        </div>
+                      </div>
+                      <div class="col-lg-12">
+                        <div class="input-block">
+                          <label class="form-control-label">Phone Number (Optional)</label>
+                          <input type="text" class="form-control" placeholder="Phone Number">
+                        </div>
+                      </div>
+                      <div class="col-lg-12">
+                        <div class="input-block">
+                          <label class="form-control-label">Address Line 1</label>
+                          <input type="text" class="form-control" placeholder="Address">
+                        </div>
+                      </div>
+                      <div class="col-lg-12">
+                        <div class="input-block">
+                          <label class="form-control-label">Address Line 2 (Optional)</label>
+                          <input type="text" class="form-control" placeholder="Address">
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="input-block">
+                          <label class="form-label">State</label>
+                          <select class="form-select select" name="sellist1">
+                            <option>Select State</option>
+                            <option>Brazil</option>
+                            <option>French</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="input-block">
+                          <label class="form-label">Country</label>
+                          <select class="form-select select" name="sellist1">
+                            <option>Select country</option>
+                            <option>India</option>
+                            <option>America</option>
+                            <option>London</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="input-block">
+                          <label class="form-control-label">Zip/Postal Code</label>
+                          <input type="text" class="form-control">
+                        </div>
+                      </div>
+                      <div class="col-md-12 col-lg-10">
+                        <div class="input-block ship-check">
+                          <input class="form-check-input" type="checkbox" name="remember">
+                          Shipping address is the same as my billing address
+                        </div>
+                        <div class="input-block ship-check mb-0">
+                          <input class="form-check-input" type="checkbox" name="remember">
+                          Save this information for next time
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="student-widget pay-method">
+              <div class="student-widget-group add-course-info">
+                <div class="cart-head">
+                  <h4>Payment Method</h4>
+                </div>
+                <div class="checkout-form">
+                  <form action="cart.html">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div class="wallet-method">
+                          <label class="radio-inline custom_radio me-4">
+                            <input type="radio" name="optradio" checked>
+                            <span class="checkmark"></span> Credit or Debit card
+                          </label>
+                          <label class="radio-inline custom_radio">
+                            <input type="radio" name="optradio">
+                            <span class="checkmark"></span> PayPal
+                          </label>
+                        </div>
+                        <div class="input-block">
+                          <label class="form-control-label">Card Number</label>
+                          <input type="text" class="form-control" placeholder="XXXX XXXX XXXX XXXX">
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="input-block">
+                          <label class="form-label">Month</label>
+                          <select class="form-select select" name="sellist1">
+                            <option>Month</option>
+                            <option>Jun</option>
+                            <option>Feb</option>
+                            <option>March</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="input-block">
+                          <label class="form-label">Year</label>
+                          <select class="form-select select" name="sellist1">
+                            <option>Year</option>
+                            <option>2024</option>
+                            <option>2021</option>
+                            <option>2020</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="input-block">
+                          <label class="form-control-label">CVV Code </label>
+                          <input type="text" class="form-control" placeholder="XXXX">
+                        </div>
+                      </div>
+                      <div class="col-lg-12">
+                        <div class="input-block">
+                          <label class="form-control-label">Name on Card</label>
+                          <input type="text" class="form-control" placeholder="Address">
+                        </div>
+                      </div>
+                      <div class="col-md-12 col-lg-10">
+                        <div class="input-block ship-check">
+                          <input class="form-check-input" type="checkbox" name="remember">
+                          Remember this card
+                        </div>
+                      </div>
+                      <div class="payment-btn">
+                        <button class="btn btn-primary" type="submit">Make a Payment</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+        <div class="col-lg-4 theiaStickySidebar">
+          <div class="student-widget select-plan-group">
+            <div class="student-widget-group">
+              <div class="plan-header">
+                <h4>Enrolled Courses</h4>
+              </div>
+                <div class="mb-3" *ngIf="carts.length != 0; else displayMessage">
+                  <div class="basic-plan " *ngFor="let cart of carts">
+                    <div class="d-flex">
+                      <div>
+                        <h3>{{cart.title}}</h3>
+
+                        <h2 *ngIf="location.country == 'Nigeria'"><span>&#8358;</span>{{cart.price | number}}</h2>
+                        <h2 *ngIf="location.country != 'Nigeria'"><span>$</span>{{cart.price | number}}</h2>
+                      </div>
+                      <div (click)="remove(cart.id)"  class="click" title="Remove"><i class="fa fa-trash"></i></div>
+                    </div>
+
+                  </div>
+                </div>
+                <ng-template #displayMessage>
+                 <app-error-message message="You have not enroll for a course"></app-error-message>
+                </ng-template>
+
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <app-footer></app-footer>
+</div>

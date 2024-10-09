@@ -1,0 +1,127 @@
+<div class="main-wrapper">
+
+  <app-header [user]="user"></app-header>
+
+
+  <app-breadcrumb [title]="'Courses'"></app-breadcrumb>
+
+
+  <div class="page-content">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+          <app-sidebar [user]="user"></app-sidebar>
+        </div>
+
+
+        <div class="col-xl-9 col-lg-9">
+          <div class="profile-heading">
+            <div class="d-flex justify-content-between">
+              <h3>Courses</h3>
+              <div>
+<input type="text" name="searchText" [ngModel]="searchText" (ngModelChange)="searchKey($event)"
+  placeholder="Search course" class="form-control">
+              </div>
+
+            </div>
+          </div>
+          <div class="row mt-3" *ngIf="loading; else loadData">
+            <app-loader [title]="loadingTitle"></app-loader>
+          </div>
+          <ng-template #loadData>
+
+            <div class="row mt-3" *ngIf="courses.length != 0; else loadMessage">
+              <div class="col-xl-12 col-lg-12" *ngIf="!searchText">
+                <div class="row">
+                  <div class="col-xxl-4 col-md-6 d-flex" *ngFor="let course of paginatedData">
+                    <div class="course-box flex-fill">
+                      <div class="product">
+                        <div class="product-img">
+                          <a href="javascript:void(0)">
+                            <img class="img-fluid" alt="Img" [src]="'http://127.0.0.1:8000/' + course.image">
+                          </a>
+
+                        </div>
+                        <div class="product-content">
+                          <h3 class="title instructor-text"><a
+                              routerLink="/account/instructor/courses/{{course.slug}}">{{course.title}}</a></h3>
+                          <div class="row course-edit-btn mt-3">
+                            <div class="col-md-6">
+                            <a routerLink="/account/instructor/students/{{course.slug}}">My Students</a>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="d-flex flex-column">
+
+                                <a routerLink="/account/instructor/assessment-answers/{{course.slug}}">Submitted
+                                  Assessments</a>
+                              </div>
+                            </div>
+                          </div>
+
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+               <div class="col-xl-12 col-lg-12" *ngIf="searchText">
+                 <div class="row">
+                  <div class="col-xxl-4 col-md-6 d-flex" *ngFor="let course of filteredCourses">
+                    <div class="course-box flex-fill">
+                      <div class="product">
+                        <div class="product-img">
+                          <a href="javascript:void(0)">
+                            <img class="img-fluid" alt="Img" [src]="'http://127.0.0.1:8000/' + course.image">
+                          </a>
+
+                        </div>
+                        <div class="product-content">
+                          <h3 class="title instructor-text"><a
+                              routerLink="/account/instructor/courses/{{course.slug}}">{{course.title}}</a></h3>
+                          <div class="row course-edit-btn mt-3">
+                            <div class="col-md-6">
+                              <a routerLink="/account/instructor/courses/{{course.slug}}">Course Details</a>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="d-flex flex-column">
+                                <a routerLink="/account/instructor/students/{{course.slug}}">My Students</a>
+                                <a routerLink="/account/instructor/assessment-answers/{{course.slug}}">Submitted
+                                  Assessments</a>
+                              </div>
+                            </div>
+                          </div>
+
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                 </div>
+               </div>
+
+
+
+            </div>
+            <ng-template #loadMessage>
+              <app-error-message [message]="'There are no courses added yet!'"></app-error-message>
+            </ng-template>
+
+          </ng-template>
+
+ <!-- pagination -->
+ <app-pagination [totalItems]="courses.length" [itemsPerPage]="itemsPerPage" *ngIf="courses.length > itemsPerPage"
+   [currentPage]="currentPage" (onClick)="changePage($event)"></app-pagination>
+
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <app-footer></app-footer>
+
+</div>

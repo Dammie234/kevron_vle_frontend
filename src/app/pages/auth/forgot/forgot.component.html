@@ -1,0 +1,51 @@
+<div class="main-wrapper">
+  <div class="row">
+
+    <div class="col-md-6 login-bg">
+      <div class="welcome-login">
+        <div class="login-banner">
+          <img src="assets/img/login-img.png" class="img-fluid" alt="Logo">
+        </div>
+        <div class="mentor-course text-center">
+          <h2>Welcome to <br>Kevron Virtual Learning.</h2>
+          <p>Recover your password to continue your courses and modules on out platform.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 login-wrap-bg">
+
+      <div class="login-wrapper">
+        <div class="loginbox">
+          <div class="img-logo">
+            <img src="assets/img/kevron-group-logo.png" class="img-fluid" alt="Logo">
+            <div class="back-home">
+              <a routerLink="/">Back to Login</a>
+            </div>
+          </div>
+          <h1>Forgot Password ?</h1>
+          <div class="reset-password">
+            <p>Enter your email to reset your password.</p>
+          </div>
+          <app-success-message *ngIf="success" [message]="success"></app-success-message>
+          <app-error-message *ngIf="error" [message]="error"></app-error-message>
+          <app-loader [title]="'Requesting Password Change'" *ngIf="loading; else loadForm"></app-loader>
+          <ng-template #loadForm>
+            <form (submit)="submit()">
+              <div class="input-block">
+                <label class="form-control-label">Email</label>
+                <input type="email" class="form-control" placeholder="Enter your email address" name="email" [(ngModel)]="email">
+              </div>
+              <div class="d-grid">
+                <button class="btn btn-start" type="submit">Submit</button>
+              </div>
+            </form>
+          </ng-template>
+
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
